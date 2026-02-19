@@ -54,11 +54,22 @@ create table public.recipes (
   created_at timestamptz default now()
 );
 
+-- Quran Progress Table (New)
+create table public.quran_progress (
+  id uuid default uuid_generate_v4() primary key,
+  user_id uuid references public.profiles(id) not null,
+  juz_number int check (juz_number >= 1 and juz_number <= 30),
+  is_completed boolean default false,
+  completed_at timestamptz default now(),
+  unique(user_id, juz_number)
+);
+
 -- Row Level Security (RLS)
 alter table public.profiles enable row level security;
 alter table public.daily_logs enable row level security;
 alter table public.period_logs enable row level security;
 alter table public.recipes enable row level security;
+alter table public.quran_progress enable row level security;
 
 -- Policies
 -- Profiles: Users can view and update their own profile
@@ -95,6 +106,10 @@ create policy "Users can update own period logs" on public.period_logs
 create policy "Recipes are public" on public.recipes
   for select using (true);
 
+-- Quran Progress: Users can manage own quran progress
+create policy "Users can manage own quran progress" on public.quran_progress
+  for all using (auth.uid() = user_id);
+
 -- Functions and Triggers
 
 -- Function to handle new user signup
@@ -129,3 +144,16 @@ begin
   return debt;
 end;
 $$ language plpgsql;
+
+-- Trigger to update updated_at column
+create or replace function update_updated_at_column()
+returns trigger as $$
+begin
+    new.updated_at = now();
+    return new;
+end;
+$$ language plpgsql;
+
+create trigger update_profiles_updated_at
+before update on public.profiles
+for each row execute procedure update_updated_at_column();
