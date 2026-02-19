@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Sunny Bloom - Home</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..700&amp;family=Satoshi:wght@300..900&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Noto+Sans:ital,wght@0,100..900;1,100..900&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#F4978E">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Sunny Bloom">
+    <link rel="apple-touch-icon" href="https://placehold.co/180x180/F4978E/FFFDF5?text=SB">
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#F4978E", // Terracotta Pink
+                        "bg-cream": "#FFFDF5", // Cream Paper
+                        surface: "#FFFFFF", // Pure White
+                        "text-charcoal": "#4A4238", // Warm Charcoal
+                        "text-taupe": "#9C8E80", // Taupe
+                        accent: "#F8D57E", // Marigold Yellow
+                        sage: "#E6F0E9", // Sage Mist
+                    },
+                    fontFamily: {
+                        serif: ["Fraunces", "serif"],
+                        sans: ["Satoshi", "sans-serif"],
+                    },
+                    borderRadius: {
+                        "card": "24px",
+                        "pill": "100px",
+                    },
+                    boxShadow: {
+                        "soft": "0 10px 40px -10px rgba(244, 151, 142, 0.15)",
+                    },
+                    backgroundImage: {
+                        "texture": "url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMDAlJyBoZWlnaHQ9JzEwMCUnPjxmaWx0ZXIgaWQ9J25vaXNlJz48ZmVUdXJidWxlbmNlIHR5cGU9J2ZyYWN0YWxOb2lzZScgYmFzZUZyZXF1ZW5jeT0nMC44JyBudW1PY3RhdmVzPSc0JyBzdGl0Y2hUaWxlcz0nc3RpdGNoJyAvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPScxMDAlJyBoZWlnaHQ9JzEwMCUnIGZpbHRlcj0ndXJsKCNub2lzZSknIG9wYWNpdHk9JzAuMDUnLz48L3N2Zz4=')",
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Satoshi', sans-serif;
+            background-color: #FFFDF5;
+            min-height: max(884px, 100dvh);
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        .font-serif {
+            font-family: 'Fraunces', serif;
+        }
+
+        /* Custom scrollbar hiding */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Period Mode Transitions */
+        body {
+            transition: background-color 0.5s ease;
+        }
+
+        body.period-mode {
+            background-color: #fcecea !important;
+            /* Soft Pink from palette */
+        }
+
+        /* Update specific text colors in period mode if needed */
+        body.period-mode .text-primary {
+            color: #ed5345 !important;
+            /* Slightly darker/redder pink for contrast */
+        }
+
+        /* Safe Area Nav */
+        nav {
+            padding-bottom: calc(env(safe-area-inset-bottom) + 12px) !important;
+        }
+    </style>
+</head>
+
+<body class="bg-bg-cream text-text-charcoal min-h-screen relative overflow-hidden flex flex-col">
+    <!-- Background Texture Overlay -->
+    <div class="absolute inset-0 pointer-events-none z-0 bg-texture opacity-60 mix-blend-multiply"></div>
+
+    <!-- Main Content Wrapper -->
+    <div class="relative z-10 flex-1 flex flex-col max-w-md mx-auto w-full h-full pb-20">
+        <!-- Header -->
+        <header class="pt-8 px-6 flex justify-between items-start">
+            <div>
+                <p class="text-text-taupe text-sm font-medium tracking-wide mb-1">12 Ramadan 1445 H</p>
+                <h1 class="text-text-charcoal text-2xl font-semibold leading-tight font-serif">
+                    Assalamu’alaikum,<br />Sarah</h1>
+            </div>
+            <button
+                class="bg-surface p-2 rounded-full shadow-soft text-text-charcoal hover:bg-sage/20 transition-colors">
+                <span class="material-symbols-outlined text-[24px]">settings</span>
+            </button>
+        </header>
+
+        <!-- The Day Dial (Hero) -->
+        <section class="flex-1 flex flex-col items-center justify-center py-6 min-h-[360px]">
+            <div class="relative size-[280px] flex items-center justify-center">
+                <!-- Outer Glow/Decor -->
+                <div class="absolute inset-4 rounded-full bg-gradient-to-tr from-accent/20 to-primary/20 blur-xl"></div>
+                <!-- SVG Ring -->
+                <svg class="size-full -rotate-90 transform" viewbox="0 0 280 280">
+                    <!-- Track -->
+                    <circle class="opacity-30" cx="140" cy="140" fill="none" r="120" stroke="#E6E0D8"
+                        stroke-linecap="round" stroke-width="16"></circle>
+                    <!-- Progress (Calculated for visual: approx 70%) -->
+                    <circle class="transition-all duration-1000 ease-out" cx="140" cy="140" fill="none" r="120"
+                        stroke="url(#gradient)" stroke-dasharray="754" stroke-dashoffset="226" stroke-linecap="round"
+                        stroke-width="16"></circle>
+                    <!-- Gradient Definition -->
+                    <defs>
+                        <lineargradient id="gradient" x1="0%" x2="100%" y1="0%" y2="0%">
+                            <stop offset="0%" stop-color="#F8D57E"></stop>
+                            <stop offset="100%" stop-color="#F4978E"></stop>
+                        </lineargradient>
+                    </defs>
+                </svg>
+                <!-- Center Content -->
+                <div class="absolute flex flex-col items-center text-center">
+                    <span class="text-6xl font-serif font-semibold text-text-charcoal tracking-tight">04:23</span>
+                    <span class="text-text-taupe font-medium mt-1">Hours to Maghrib</span>
+                </div>
+            </div>
+            <!-- Status Toggle -->
+            <div class="mt-8 bg-surface rounded-pill p-1.5 shadow-sm inline-flex relative">
+                <div class="absolute left-1.5 top-1.5 bottom-1.5 w-[calc(50%-6px)] bg-primary rounded-pill shadow-sm transition-transform duration-300 ease-in-out"
+                    id="toggle-bg"></div>
+                <button
+                    class="relative z-10 px-6 py-2 rounded-pill text-sm font-bold text-white transition-colors duration-200 w-24"
+                    id="btn-fasting" onclick="setMode('fasting')">Fasting</button>
+                <button
+                    class="relative z-10 px-6 py-2 rounded-pill text-sm font-medium text-text-taupe hover:text-primary transition-colors duration-200 w-24"
+                    id="btn-period" onclick="setMode('period')">Period</button>
+            </div>
+        </section>
+
+        <!-- Prayer Times Strip -->
+        <section class="px-6 mb-6">
+            <div class="flex justify-between items-center text-xs sm:text-sm" id="prayer-times-strip">
+                <!-- Populated by JS -->
+                <div class="flex flex-col items-center gap-1 text-text-taupe"><span
+                        class="font-medium">Subuh</span><span>04:42</span></div>
+                <div class="flex flex-col items-center gap-1 text-text-taupe"><span
+                        class="font-medium">Dhuhr</span><span>11:58</span></div>
+                <div class="flex flex-col items-center gap-1 text-text-taupe"><span
+                        class="font-medium">Asr</span><span>15:12</span></div>
+                <div
+                    class="flex flex-col items-center gap-1 text-text-charcoal font-bold scale-110 origin-bottom transition-transform">
+                    <span class="font-bold">Maghrib</span><span class="text-primary">17:59</span>
+                </div>
+                <div class="flex flex-col items-center gap-1 text-text-taupe"><span
+                        class="font-medium">Isha</span><span>19:08</span></div>
+            </div>
+        </section>
+
+        <!-- Today's Focus Cards -->
+        <section class="pl-6 mb-8">
+            <h3 class="text-text-charcoal text-lg font-serif font-semibold mb-4">Today's Focus</h3>
+            <div class="flex gap-4 overflow-x-auto no-scrollbar pb-4 pr-6">
+                <!-- Card 1: Iftar Idea -->
+                <div class="flex-shrink-0 w-[160px] h-[180px] bg-surface rounded-card shadow-soft p-3 flex flex-col justify-between group cursor-pointer hover:-translate-y-1 transition-transform duration-300"
+                    onclick="window.location.href='kitchen.html'">
+                    <div class="h-24 w-full rounded-xl overflow-hidden relative bg-gray-100">
+                        <img alt="Warm bowl of savory oatmeal porridge with toppings" class="w-full h-full object-cover"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCTv0f-p6blQZ1Gpa-f5GU9puPk83LtJoWBaKGiAYIcehlWR6Qq4enK3WtQFd5f8djwhtGPniMwUajk6AnzOXkI8m6wSTegzD4AgAJW14PEV5i6s4HtioenJ0Qk6ZyI1I9I1e1ZYzGfHTnq03N-vOKypvGhbw6mk5G4KIuKOdq5AkaViAmh_HQOZPE0GmSMdlwoq1MhPS9VYeG52cx6nSPHxtgscT-3kO5ENGYggTWfal5dW6S2oH7BAVkfP_ys0DPkkNeYD7Epf2o9" />
+                        <div
+                            class="absolute top-2 right-2 bg-white/90 backdrop-blur-sm px-2 py-0.5 rounded-full text-[10px] font-bold text-text-charcoal shadow-sm">
+                            15m</div>
+                    </div>
+                    <div>
+                        <span class="text-[10px] text-primary font-bold uppercase tracking-wider block mb-1">Iftar
+                            Idea</span>
+                        <h4 class="font-serif text-text-charcoal leading-tight text-sm">Savory Oats</h4>
+                    </div>
+                </div>
+                <!-- Card 2: Wellness -->
+                <div class="flex-shrink-0 w-[160px] h-[180px] bg-sage/30 rounded-card shadow-none border border-sage p-4 flex flex-col justify-between group cursor-pointer hover:bg-sage/50 transition-colors duration-300"
+                    onclick="window.location.href='wellness.html'">
+                    <div class="flex justify-between items-start">
+                        <div
+                            class="bg-white p-2 rounded-full inline-flex items-center justify-center text-primary shadow-sm">
+                            <span class="material-symbols-outlined text-[20px]">water_drop</span>
+                        </div>
+                    </div>
+                    <div>
+                        <span
+                            class="text-[10px] text-text-taupe font-bold uppercase tracking-wider block mb-1">Wellness</span>
+                        <h4 class="font-serif text-text-charcoal leading-tight text-sm mb-2">Hydration Check</h4>
+                        <div class="flex gap-1">
+                            <div class="h-1.5 w-full bg-primary rounded-full"></div>
+                            <div class="h-1.5 w-full bg-white rounded-full"></div>
+                            <div class="h-1.5 w-full bg-white rounded-full"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 3: Mood -->
+                <div class="flex-shrink-0 w-[160px] h-[180px] bg-surface rounded-card shadow-soft p-4 flex flex-col justify-between group cursor-pointer hover:-translate-y-1 transition-transform duration-300"
+                    onclick="window.location.href='wellness.html'">
+                    <div class="flex justify-center items-center flex-1">
+                        <span
+                            class="text-4xl filter drop-shadow-sm grayscale group-hover:grayscale-0 transition-all duration-300">🌿</span>
+                    </div>
+                    <div>
+                        <span
+                            class="text-[10px] text-accent font-bold uppercase tracking-wider block mb-1">Journal</span>
+                        <h4 class="font-serif text-text-charcoal leading-tight text-sm">How do you feel?</h4>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Bottom Navigation Bar -->
+    <nav
+        class="fixed bottom-0 w-full max-w-md left-1/2 -translate-x-1/2 bg-bg-cream/90 backdrop-blur-md border-t border-sage/50 px-6 pb-6 pt-3 z-50 flex justify-between items-end">
+        <a class="flex flex-col items-center gap-1 group w-16" href="index.html">
+            <span
+                class="material-symbols-outlined text-primary text-[28px] transition-transform group-hover:scale-110">spa</span>
+            <span class="text-[10px] font-bold text-text-charcoal">Garden</span>
+        </a>
+        <a class="flex flex-col items-center gap-1 group w-16" href="tracker.html">
+            <span
+                class="material-symbols-outlined text-text-taupe text-[28px] group-hover:text-primary transition-colors">calendar_month</span>
+            <span class="text-[10px] font-medium text-text-taupe group-hover:text-text-charcoal">Tracker</span>
+        </a>
+        <a class="flex flex-col items-center gap-1 group w-16" href="kitchen.html">
+            <span
+                class="material-symbols-outlined text-text-taupe text-[28px] group-hover:text-primary transition-colors">skillet</span>
+            <span class="text-[10px] font-medium text-text-taupe group-hover:text-text-charcoal">Kitchen</span>
+        </a>
+        <a class="flex flex-col items-center gap-1 group w-16" href="wellness.html">
+            <span
+                class="material-symbols-outlined text-text-taupe text-[28px] group-hover:text-primary transition-colors">self_improvement</span>
+            <span class="text-[10px] font-medium text-text-taupe group-hover:text-text-charcoal">Wellness</span>
+        </a>
+    </nav>
+    <script src="js/prayer-times.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(reg => console.log('Sunny Bloom SW Registered!'))
+                    .catch(err => console.log('SW Registration Failed', err));
+            });
+        }
+    </script>
+    <script>
+        // UI Logic Only - Called by app.js or locally for optimistic update
+        function updateUIToggle(mode) {
+            const toggleBg = document.getElementById('toggle-bg');
+            const btnFasting = document.getElementById('btn-fasting');
+            const btnPeriod = document.getElementById('btn-period');
+
+            if (mode === 'fasting') {
+                document.body.classList.remove('period-mode');
+                toggleBg.style.transform = 'translateX(0)';
+                btnFasting.classList.add('text-white', 'font-bold');
+                btnFasting.classList.remove('text-text-taupe', 'font-medium');
+                btnPeriod.classList.add('text-text-taupe', 'font-medium');
+                btnPeriod.classList.remove('text-white', 'font-bold');
+            } else {
+                document.body.classList.add('period-mode');
+                toggleBg.style.transform = 'translateX(100%)';
+                btnPeriod.classList.add('text-white', 'font-bold');
+                btnPeriod.classList.remove('text-text-taupe', 'font-medium');
+                btnFasting.classList.add('text-text-taupe', 'font-medium');
+                btnFasting.classList.remove('text-white', 'font-bold');
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Sunny Bloom - Onboarding</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;400;600&amp;family=Satoshi:wght@400;500;700&amp;display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#F4978E">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Sunny Bloom">
+    <link rel="apple-touch-icon" href="https://placehold.co/180x180/F4978E/FFFDF5?text=SB">
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#F4978E", // Terracotta Pink
+                        "background-light": "#FFFDF5", // Cream Paper
+                        "background-dark": "#211211", // Keeping dark mode dark as requested in prompt, though PRD is light-themed.
+                        "surface": "#FFFFFF",
+                        "text-main": "#4A4238", // Warm Charcoal
+                        "text-muted": "#9C8E80", // Taupe
+                        "accent": "#F8D57E", // Marigold
+                    },
+                    fontFamily: {
+                        "display": ["Fraunces", "Newsreader", "serif"],
+                        "sans": ["Satoshi", "Noto Sans", "sans-serif"],
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "2xl": "1.5rem",
+                        "3xl": "2rem",
+                        "full": "9999px"
+                    },
+                    backgroundImage: {
+                        'paper-texture': "url('https://www.transparenttextures.com/patterns/cream-paper.png')",
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        /* Custom styles for specific PRD requirements */
+        body {
+            font-family: 'Satoshi', sans-serif;
+            background-color: #FFFDF5;
+            min-height: max(884px, 100dvh);
+        }
+
+        /* Subtle grain overlay */
+        .bg-grain {
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+        }
+
+        /* Minimalist Input Styles */
+        .input-minimal {
+            border: none;
+            border-bottom: 1px solid #E5E0D8;
+            background: transparent;
+            padding: 12px 0;
+            transition: border-color 0.3s ease;
+            border-radius: 0;
+        }
+
+        .input-minimal:focus {
+            outline: none;
+            box-shadow: none;
+            border-bottom: 2px solid #F4978E;
+        }
+
+        /* Radio Chip Styles */
+        .radio-chip-input:checked+.radio-chip-label {
+            background-color: #F4978E;
+            color: #FFFFFF;
+            border-color: #F4978E;
+        }
+
+        /* Hide scrollbar for clean look */
+        ::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+        }
+
+        /* Safe Area */
+        body {
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        /* Sticky bottom action needs safe area */
+        div.fixed.bottom-0 {
+            padding-bottom: calc(env(safe-area-inset-bottom) + 32px) !important;
+        }
+    </style>
+</head>
+
+<body class="relative flex min-h-screen w-full flex-col bg-background-light text-text-main overflow-x-hidden bg-grain">
+    <!-- Main Content Container -->
+    <div class="flex-1 flex flex-col w-full max-w-md mx-auto px-6 pb-24 pt-8">
+        <!-- Header / Illustration Section -->
+        <div class="flex flex-col items-center justify-center mb-8 animate-fade-in-up">
+            <div class="w-full h-[220px] rounded-[32px] overflow-hidden relative mb-6">
+                <!-- Abstract watercolor flower illustration -->
+                <div class="absolute inset-0 bg-gradient-to-b from-[#FFFDF5] to-transparent z-10"></div>
+                <img alt="Decorative flower" class="w-full h-full object-cover opacity-90"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuCuCdxAw-MdvHgvOXL1KS_ohAssyAIsVtQFB7Yk1G9hqXMErf7UDWMdN5mWkUXAPL5PAXkSLx6b9fVwULvphUBCWLpnkpwQJoDEJRn21YZSPqBQdx32YLaFVpp9wYL52zMc5---pA84Co-8xkKcWi8REHQbYqDM7KvDCHZ11YxTz_4YkzZ2gWMATUHVoyTmZQKTAZ1j6UZgFzwyCP-6YdLHxS7YfFgfscqIobdGshYGPkVsjCHZB3-XYjO8SKoE0Gxc83nAiyMCLrK6" />
+            </div>
+            <h1 class="font-display text-4xl font-semibold text-text-main text-center leading-tight tracking-tight">
+                Welcome to your <br />
+                <span class="text-primary italic">garden</span>
+            </h1>
+            <p class="text-text-muted text-center mt-3 font-medium">Let's personalize your journey.</p>
+        </div>
+        <!-- Form Section -->
+        <form class="flex flex-col gap-10 w-full" onsubmit="event.preventDefault(); window.location.href='index.html';">
+            <!-- Question 1: Name -->
+            <div class="group">
+                <label class="block text-lg font-display font-medium text-text-main mb-1" for="name">
+                    What should we call you?
+                </label>
+                <input class="input-minimal w-full text-xl text-text-main placeholder-text-muted/50 font-sans" id="name"
+                    placeholder="Your name" type="text" required />
+            </div>
+            <!-- Question 2: Status -->
+            <div class="group">
+                <label class="block text-lg font-display font-medium text-text-main mb-4">
+                    Current Status
+                </label>
+                <div class="grid grid-cols-2 gap-4">
+                    <label class="cursor-pointer relative">
+                        <input class="peer sr-only radio-chip-input" name="status" type="radio" value="student" />
+                        <div
+                            class="radio-chip-label w-full h-14 flex items-center justify-center gap-2 rounded-2xl border border-[#E5E0D8] bg-white text-text-muted transition-all duration-300 hover:border-primary/50">
+                            <span class="material-symbols-outlined text-[20px]">school</span>
+                            <span class="font-sans font-medium">Student</span>
+                        </div>
+                    </label>
+                    <label class="cursor-pointer relative">
+                        <input class="peer sr-only radio-chip-input" name="status" type="radio" value="worker" />
+                        <div
+                            class="radio-chip-label w-full h-14 flex items-center justify-center gap-2 rounded-2xl border border-[#E5E0D8] bg-white text-text-muted transition-all duration-300 hover:border-primary/50">
+                            <span class="material-symbols-outlined text-[20px]">work</span>
+                            <span class="font-sans font-medium">Worker</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+            <!-- Question 3: Cycle -->
+            <div class="group">
+                <label class="block text-lg font-display font-medium text-text-main mb-1" for="period">
+                    When did your last period start?
+                </label>
+                <div class="relative">
+                    <input
+                        class="input-minimal w-full text-xl text-text-main placeholder-text-muted/50 font-sans uppercase tracking-wider"
+                        id="period" type="date" />
+                    <div class="absolute right-0 bottom-3 pointer-events-none text-primary">
+                        <span class="material-symbols-outlined">calendar_today</span>
+                    </div>
+                </div>
+                <p class="text-xs text-text-muted mt-2 font-sans">We'll use this to predict your cycle during Ramadan.
+                </p>
+            </div>
+
+            <!-- Sticky Bottom Action -->
+            <div
+                class="fixed bottom-0 left-0 w-full p-6 bg-gradient-to-t from-background-light via-background-light to-transparent pb-8 z-50">
+                <div class="max-w-md mx-auto">
+                    <button type="submit"
+                        class="w-full bg-primary hover:bg-[#e0857c] text-white font-sans font-bold text-lg h-14 rounded-full shadow-[0_10px_40px_-10px_rgba(244,151,142,0.4)] transition-all transform active:scale-[0.98] flex items-center justify-center gap-2 group">
+                        <span>Start Journey</span>
+                        <span
+                            class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>

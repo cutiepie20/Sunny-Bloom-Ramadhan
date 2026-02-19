@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport" />
+    <title>Khatam Journey - Sunny Bloom</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..700&family=Satoshi:wght@300..900&family=Amiri:wght@400;700&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1"
+        rel="stylesheet" />
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#F4978E">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Sunny Bloom">
+    <link rel="apple-touch-icon" href="https://placehold.co/180x180/F4978E/FFFDF5?text=SB">
+    <style>
+        body {
+            font-family: 'Satoshi', sans-serif;
+            background-color: #FFFDF5;
+        }
+
+        .font-serif {
+            font-family: 'Fraunces', serif;
+        }
+
+        .font-arabic {
+            font-family: 'Amiri', serif;
+            line-height: 2.5;
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .juz-card {
+            transition: all 0.3s ease;
+        }
+
+        .juz-card.completed {
+            background-color: #E6F0E9;
+            border-color: #A6C1EE;
+        }
+
+        /* Modal Animation */
+        #detail-modal {
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateY(100%);
+        }
+
+        #detail-modal.active {
+            transform: translateY(0);
+        }
+
+        /* Safe Area */
+        body {
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        nav {
+            padding-bottom: calc(env(safe-area-inset-bottom) + 12px) !important;
+        }
+    </style>
+</head>
+
+<body class="bg-[#FFFDF5] text-[#4A4238] pb-24">
+    <header class="pt-8 px-6 pb-6 sticky top-0 bg-[#FFFDF5]/95 backdrop-blur-md z-20 border-b border-[#F4978E]/10">
+        <div class="flex items-center justify-between mb-4">
+            <button onclick="window.location.href='index.html'" class="p-2 -ml-2"><span
+                    class="material-symbols-outlined">arrow_back</span></button>
+            <h1 class="text-xl font-serif font-bold">Khatam Journey</h1>
+            <div class="w-10"></div>
+        </div>
+
+        <div class="bg-white rounded-[24px] p-5 shadow-sm border border-[#F4978E]/5">
+            <div class="flex justify-between items-end mb-2">
+                <p class="text-xs font-bold uppercase tracking-widest text-[#9C8E80]">Progres Hafalan</p>
+                <p class="text-lg font-serif font-bold text-[#F4978E]" id="overall-percent">0%</p>
+            </div>
+            <div class="w-full h-3 bg-[#FFFDF5] rounded-full overflow-hidden">
+                <div id="progress-bar" class="bg-[#F4978E] h-full transition-all duration-500" style="width: 0%"></div>
+            </div>
+        </div>
+    </header>
+
+    <main class="px-6 py-6 grid grid-cols-2 gap-4" id="juz-container"></main>
+
+    <div id="detail-modal" class="fixed inset-0 bg-[#FFFDF5] z-50 flex flex-col overflow-hidden">
+        <header class="p-6 flex items-center border-b border-[#F4978E]/10 bg-white/50 backdrop-blur-md">
+            <button onclick="closeDetail()" class="p-2 -ml-2 bg-white rounded-full shadow-sm"><span
+                    class="material-symbols-outlined">close</span></button>
+            <h2 id="modal-title" class="flex-1 text-center font-serif font-bold text-lg">Juz Detail</h2>
+            <button id="modal-complete-btn" class="p-2 text-[#F4978E]"><span
+                    class="material-symbols-outlined">check_circle</span></button>
+        </header>
+
+        <div id="verses-list" class="flex-1 overflow-y-auto p-6 space-y-8 no-scrollbar">
+            <div id="loading-state" class="flex flex-col items-center justify-center h-full text-[#9C8E80]">
+                <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-[#F4978E] mb-4"></div>
+                <p class="text-sm font-medium">Memuat Ayat...</p>
+            </div>
+        </div>
+    </div>
+
+    <nav
+        class="fixed bottom-0 w-full max-w-md left-1/2 -translate-x-1/2 bg-white/90 backdrop-blur-md border-t border-[#E6F0E9]/50 px-6 pb-8 pt-3 z-40 flex justify-between items-end shadow-lg">
+        <a class="flex flex-col items-center gap-1 group text-[#9C8E80]" href="index.html">
+            <span class="material-symbols-outlined text-[28px]">spa</span>
+            <span class="text-[10px] font-medium">Garden</span>
+        </a>
+        <a class="flex flex-col items-center gap-1 text-[#F4978E]" href="quran.html">
+            <span class="material-symbols-outlined text-[28px] fill-current">menu_book</span>
+            <span class="text-[10px] font-bold">Quran</span>
+        </a>
+        <a class="flex flex-col items-center gap-1 text-[#9C8E80]" href="kitchen.html">
+            <span class="material-symbols-outlined text-[28px]">skillet</span>
+            <span class="text-[10px] font-medium">Kitchen</span>
+        </a>
+        <a class="flex flex-col items-center gap-1 text-[#9C8E80]" href="wellness.html">
+            <span class="material-symbols-outlined text-[28px]">self_improvement</span>
+            <span class="text-[10px] font-medium">Wellness</span>
+        </a>
+    </nav>
+
+    <script>
+        const juzContainer = document.getElementById('juz-container');
+        const modal = document.getElementById('detail-modal');
+        const versesList = document.getElementById('verses-list');
+        const modalTitle = document.getElementById('modal-title');
+        let completedJuz = new Set();
+
+        // 1. Inisialisasi Grid 30 Juz
+        function initGrid() {
+            for (let i = 1; i <= 30; i++) {
+                const card = document.createElement('div');
+                card.id = `juz-card-${i}`;
+                card.className = "juz-card bg-white border border-[#F4978E]/10 rounded-[24px] p-5 flex flex-col items-center justify-center cursor-pointer hover:shadow-md active:scale-95";
+                card.onclick = () => openJuz(i);
+
+                card.innerHTML = `
+                    <div class="w-12 h-12 rounded-full bg-[#FFFDF5] flex items-center justify-center text-[#F4978E] font-bold mb-3 border border-[#F4978E]/5">
+                        ${i}
+                    </div>
+                    <p class="text-xs font-bold uppercase tracking-widest text-[#9C8E80]">Juz ${i}</p>
+                `;
+                juzContainer.appendChild(card);
+            }
+        }
+
+        // 2. Buka Detail Juz & Panggil API
+        async function openJuz(n) {
+            modalTitle.innerText = `Juz ${n}`;
+            modal.classList.add('active');
+            versesList.innerHTML = `<div class="flex flex-col items-center justify-center h-full text-[#9C8E80]"><div class="animate-spin rounded-full h-8 w-8 border-b-2 border-[#F4978E] mb-4"></div><p>Memuat Ayat...</p></div>`;
+
+            try {
+                const response = await fetch(`https://api.alquran.cloud/v1/juz/${n}/quran-uthmani`);
+                const data = await response.json();
+                renderVerses(data.data.surahs);
+            } catch (error) {
+                versesList.innerHTML = `<p class="text-center text-red-400 mt-20">Gagal memuat ayat. Periksa koneksi internet kamu.</p>`;
+            }
+        }
+
+        // 3. Render Daftar Ayat Grouped by Surah
+        function renderVerses(surahs) {
+            versesList.innerHTML = '';
+            Object.values(surahs).forEach(surah => {
+                const surahSection = document.createElement('div');
+                surahSection.className = "space-y-6";
+
+                let versesHTML = surah.ayahs.map(ayah => `
+                    <div class="p-4 bg-white rounded-[20px] border border-[#F4978E]/5 shadow-sm">
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="w-6 h-6 rounded-full bg-[#F8D57E]/20 text-[#F8D57E] text-[10px] flex items-center justify-center font-bold">${ayah.numberInSurah}</span>
+                        </div>
+                        <p class="font-arabic text-2xl text-right text-[#4A4238] leading-relaxed" dir="rtl">
+                            ${ayah.text}
+                        </p>
+                    </div>
+                `).join('');
+
+                surahSection.innerHTML = `
+                    <div class="sticky top-0 bg-[#FFFDF5] py-2 z-10">
+                        <h3 class="font-serif font-bold text-[#F4978E] text-lg flex justify-between">
+                            ${surah.englishName} 
+                            <span class="font-arabic text-xl">${surah.name}</span>
+                        </h3>
+                    </div>
+                    <div class="space-y-4">${versesHTML}</div>
+                `;
+                versesList.appendChild(surahSection);
+            });
+        }
+
+        function closeDetail() {
+            modal.classList.remove('active');
+        }
+
+        initGrid();
+    </script>
+</body>
+
+</html>

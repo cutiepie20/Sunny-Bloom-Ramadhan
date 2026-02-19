@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Sunny Bloom - Fasting & Cycle Tracker</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Noto+Sans:ital,wght@0,100..900;1,100..900&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Noto+Sans:ital,wght@0,100..900;1,100..900&amp;display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#F4978E">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Sunny Bloom">
+    <link rel="apple-touch-icon" href="https://placehold.co/180x180/F4978E/FFFDF5?text=SB">
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ed5345", // Terracotta Red/Pink for Period/Active
+                        "primary-soft": "#fcecea", // Soft background for primary
+                        "accent": "#F8D57E", // Marigold Yellow for Fasting
+                        "accent-dark": "#dcb352", // Darker Marigold for text
+                        "background-light": "#FFFDF5", // Cream Paper
+                        "background-dark": "#211211",
+                        "surface": "#FFFFFF",
+                        "text-main": "#4A4238", // Warm Charcoal
+                        "text-muted": "#9C8E80", // Taupe
+                    },
+                    fontFamily: {
+                        "display": ["Newsreader", "serif"],
+                        "body": ["Noto Sans", "sans-serif"],
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "2xl": "2rem",
+                        "full": "9999px"
+                    },
+                    boxShadow: {
+                        "soft": "0 10px 40px -10px rgba(237, 83, 69, 0.15)",
+                        "inner-glow": "inset 0 2px 4px 0 rgba(0, 0, 0, 0.06)",
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        /* Watercolor/Paper Texture Effect */
+        .bg-paper-texture {
+            background-color: #FFFDF5;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Safe Area */
+        body {
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        nav {
+            padding-bottom: calc(env(safe-area-inset-bottom) + 12px) !important;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-paper-texture text-text-main font-body antialiased min-h-screen flex flex-col relative overflow-x-hidden selection:bg-primary/20">
+    <!-- Header Section -->
+    <header
+        class="pt-8 pb-4 px-6 flex items-center justify-between sticky top-0 z-20 bg-background-light/95 backdrop-blur-sm">
+        <button class="p-2 rounded-full hover:bg-black/5 transition-colors text-text-main"
+            onclick="window.history.back()">
+            <span class="material-symbols-outlined" style="font-size: 24px;">arrow_back</span>
+        </button>
+        <div class="text-center">
+            <h2 class="font-display font-semibold text-lg text-text-main leading-tight">Ramadan 1445 H</h2>
+            <p class="text-xs text-text-muted font-medium tracking-wide uppercase">Hijri Calendar</p>
+        </div>
+        <button class="p-2 rounded-full hover:bg-black/5 transition-colors text-text-main">
+            <span class="material-symbols-outlined" style="font-size: 24px;">settings</span>
+        </button>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 px-4 pb-24 w-full max-w-md mx-auto flex flex-col gap-6">
+        <!-- Month Navigator -->
+        <div class="flex items-center justify-between px-2">
+            <button class="p-2 text-text-muted hover:text-primary transition-colors">
+                <span class="material-symbols-outlined">chevron_left</span>
+            </button>
+            <h1 class="font-display font-bold text-3xl text-text-main">March 2024</h1>
+            <button class="p-2 text-text-muted hover:text-primary transition-colors">
+                <span class="material-symbols-outlined">chevron_right</span>
+            </button>
+        </div>
+
+        <!-- Calendar Legend -->
+        <div class="flex items-center justify-center gap-6 text-sm font-medium">
+            <div class="flex items-center gap-2">
+                <div class="w-3 h-3 rounded-full bg-accent shadow-sm"></div>
+                <span class="text-text-muted">Fasting</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <div class="w-3 h-3 rounded-full bg-primary shadow-sm"></div>
+                <span class="text-text-muted">Haid (Period)</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <div class="w-3 h-3 rounded-full border-2 border-dashed border-primary"></div>
+                <span class="text-text-muted">Predicted</span>
+            </div>
+        </div>
+
+        <!-- Calendar Grid -->
+        <div class="bg-surface rounded-2xl p-4 shadow-soft">
+            <div class="grid grid-cols-7 mb-4 text-center">
+                <div class="text-xs font-bold text-text-muted uppercase tracking-wider py-2">Mon</div>
+                <div class="text-xs font-bold text-text-muted uppercase tracking-wider py-2">Tue</div>
+                <div class="text-xs font-bold text-text-muted uppercase tracking-wider py-2">Wed</div>
+                <div class="text-xs font-bold text-text-muted uppercase tracking-wider py-2">Thu</div>
+                <div class="text-xs font-bold text-text-muted uppercase tracking-wider py-2">Fri</div>
+                <div class="text-xs font-bold text-text-muted uppercase tracking-wider py-2">Sat</div>
+                <div class="text-xs font-bold text-text-muted uppercase tracking-wider py-2">Sun</div>
+            </div>
+            <!-- Days Grid (Static content from prompt for now, to be dynamic in v2) -->
+            <div class="grid grid-cols-7 gap-y-4 gap-x-1 text-center">
+                <div class="p-1"></div>
+                <div class="p-1"></div>
+                <div class="p-1"></div>
+                <div class="p-1"></div>
+                <!-- Days 1-6 -->
+                <div class="aspect-square flex flex-col items-center justify-center relative group cursor-pointer">
+                    <div class="w-9 h-9 rounded-full bg-accent flex items-center justify-center shadow-sm"><span
+                            class="text-sm font-bold text-white">1</span></div>
+                </div>
+                <div class="aspect-square flex flex-col items-center justify-center relative group cursor-pointer">
+                    <div class="w-9 h-9 rounded-full bg-accent flex items-center justify-center shadow-sm"><span
+                            class="text-sm font-bold text-white">2</span></div>
+                </div>
+                <div class="aspect-square flex flex-col items-center justify-center relative group cursor-pointer">
+                    <div class="w-9 h-9 rounded-full bg-accent flex items-center justify-center shadow-sm"><span
+                            class="text-sm font-bold text-white">3</span></div>
+                </div>
+                <div class="aspect-square flex flex-col items-center justify-center relative group cursor-pointer">
+                    <div class="w-9 h-9 rounded-full bg-accent flex items-center justify-center shadow-sm"><span
+                            class="text-sm font-bold text-white">4</span></div>
+                </div>
+                <div class="aspect-square flex flex-col items-center justify-center relative group cursor-pointer">
+                    <div class="w-9 h-9 rounded-full bg-accent flex items-center justify-center shadow-sm"><span
+                            class="text-sm font-bold text-white">5</span></div>
+                </div>
+                <div class="aspect-square flex flex-col items-center justify-center relative group cursor-pointer">
+                    <div class="w-9 h-9 rounded-full bg-accent flex items-center justify-center shadow-sm"><span
+                            class="text-sm font-bold text-white">6</span></div>
+                </div>
+                <!-- Day 7 Sick -->
+                <div class="aspect-square flex flex-col items-center justify-center relative group cursor-pointer">
+                    <div class="w-9 h-9 rounded-full border-2 border-gray-200 flex items-center justify-center"><span
+                            class="text-sm font-medium text-gray-400">7</span></div>
+                    <div class="absolute -bottom-1 w-1 h-1 rounded-full bg-gray-300"></div>
+                </div>
+                <!-- Day 8 Period Starts -->
+                <div class="aspect-square flex flex-col items-center justify-center relative group cursor-pointer">
+                    <div class="w-9 h-9 rounded-full bg-primary flex items-center justify-center shadow-sm"><span
+                            class="text-sm font-bold text-white">8</span></div>
+                    <div class="absolute -top-1 -right-1"><span class="flex h-3 w-3"><span
+                                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span><span
+                                class="relative inline-flex rounded-full h-3 w-3 bg-primary"></span></span></div>
+                </div>
+                <!-- Days 9-10 Period -->
+                <div class="aspect-square flex flex-col items-center justify-center relative group cursor-pointer">
+                    <div class="w-9 h-9 rounded-full bg-primary flex items-center justify-center shadow-sm"><span
+                            class="text-sm font-bold text-white">9</span></div>
+                </div>
+                <div class="aspect-square flex flex-col items-center justify-center relative group cursor-pointer">
+                    <div class="w-9 h-9 rounded-full bg-primary flex items-center justify-center shadow-sm"><span
+                            class="text-sm font-bold text-white">10</span></div>
+                </div>
+                <!-- Day 11 Today -->
+                <div class="aspect-square flex flex-col items-center justify-center relative group cursor-pointer">
+                    <div class="absolute inset-0 rounded-full border-2 border-primary opacity-30 scale-125"></div>
+                    <div class="w-9 h-9 rounded-full bg-primary flex items-center justify-center shadow-sm z-10">
+                        <span class="text-sm font-bold text-white">11</span>
+                    </div>
+                    <span
+                        class="absolute -bottom-4 text-[10px] font-bold text-primary uppercase tracking-wide">Today</span>
+                </div>
+                <!-- Day 12-13 Predicted -->
+                <div class="aspect-square flex flex-col items-center justify-center relative group cursor-pointer">
+                    <div
+                        class="w-9 h-9 rounded-full border-2 border-dashed border-primary flex items-center justify-center">
+                        <span class="text-sm font-medium text-primary">12</span>
+                    </div>
+                </div>
+                <div class="aspect-square flex flex-col items-center justify-center relative group cursor-pointer">
+                    <div
+                        class="w-9 h-9 rounded-full border-2 border-dashed border-primary flex items-center justify-center">
+                        <span class="text-sm font-medium text-primary">13</span>
+                    </div>
+                </div>
+                <!-- Rest of month -->
+                <div class="aspect-square flex flex-col items-center justify-center">
+                    <div class="w-9 h-9 flex items-center justify-center text-sm font-medium text-text-main">14</div>
+                </div>
+                <div class="aspect-square flex flex-col items-center justify-center">
+                    <div class="w-9 h-9 flex items-center justify-center text-sm font-medium text-text-main">15</div>
+                </div>
+                <!-- Simplified loop for 16-31 -->
+                <!-- ... (In real app, generate via loop) ... -->
+                <div class="aspect-square flex flex-col items-center justify-center">
+                    <div class="w-9 h-9 flex items-center justify-center text-sm font-medium text-text-main">16</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Qadha Tracker Card -->
+        <div class="bg-surface rounded-2xl p-5 shadow-soft border border-primary/10 relative overflow-hidden">
+            <div class="absolute -right-6 -top-6 w-24 h-24 bg-primary/5 rounded-full blur-xl"></div>
+            <div class="flex items-center justify-between relative z-10">
+                <div>
+                    <h3 class="font-display font-semibold text-xl text-text-main mb-1">Qadha Debt</h3>
+                    <p class="text-sm text-text-muted">Days to repay after Ramadan</p>
+                </div>
+                <div class="flex flex-col items-end">
+                    <span class="font-display font-bold text-3xl text-primary" id="qadha-count">5</span>
+                    <span class="text-xs font-bold uppercase tracking-wider text-primary/80">Days</span>
+                </div>
+            </div>
+            <!-- Tally Marks -->
+            <div class="mt-4 flex gap-3 opacity-80" id="qadha-tally">
+                <!-- Tally SVG or Divs -->
+                <div class="flex gap-1" title="5 Days">
+                    <div class="w-1 h-6 bg-primary rounded-full transform -rotate-6"></div>
+                    <div class="w-1 h-6 bg-primary rounded-full transform -rotate-3"></div>
+                    <div class="w-1 h-6 bg-primary rounded-full transform rotate-0"></div>
+                    <div class="w-1 h-6 bg-primary rounded-full transform rotate-3"></div>
+                    <div
+                        class="w-1 h-8 bg-primary/60 rounded-full transform -rotate-[65deg] origin-center absolute ml-1 -mt-1">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Insight / Tip -->
+        <div class="flex gap-4 items-start p-4 bg-primary-soft/50 rounded-xl border border-primary/10">
+            <div class="flex items-start gap-4">
+                <div class="bg-primary/10 p-3 rounded-full text-primary">
+                    <span class="material-symbols-outlined">network_intelligence_history</span>
+                </div>
+                <div>
+                    <h4 class="font-bold text-text-main mb-1">Cycle Insight</h4>
+                    <p class="text-xs text-text-muted leading-relaxed">
+                        Based on your last data, prediction for next period is around <span
+                            class="text-primary font-bold" id="next-period-date">Unknown</span>.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bottom Navigation Bar -->
+    <nav class="fixed bottom-0 w-full z-30 bg-background-light/95 backdrop-blur-md border-t border-[#f3e8e7]">
+        <div class="flex gap-2 px-4 pb-4 pt-2 justify-between">
+            <a class="flex flex-1 flex-col items-center justify-end gap-1 text-text-muted hover:text-primary transition-colors group"
+                href="index.html">
+                <span class="material-symbols-outlined group-hover:scale-110 transition-transform"
+                    style="font-size: 24px;">home</span>
+                <p class="text-[10px] font-medium uppercase tracking-wide">Home</p>
+            </a>
+            <a class="flex flex-1 flex-col items-center justify-end gap-1 text-primary" href="#">
+                <div class="relative">
+                    <span class="material-symbols-outlined fill-current" style="font-size: 24px;">calendar_month</span>
+                    <span
+                        class="absolute top-0 right-0 w-2 h-2 bg-accent rounded-full border border-background-light"></span>
+                </div>
+                <p class="text-[10px] font-medium uppercase tracking-wide">Tracker</p>
+            </a>
+            <div class="relative -top-6">
+                <button
+                    class="flex items-center justify-center w-14 h-14 rounded-full bg-primary text-white shadow-lg shadow-primary/40 hover:scale-105 transition-transform">
+                    <span class="material-symbols-outlined" style="font-size: 28px;">add</span>
+                </button>
+            </div>
+            <a class="flex flex-1 flex-col items-center justify-end gap-1 text-text-muted hover:text-primary transition-colors group"
+                href="kitchen.html">
+                <span class="material-symbols-outlined group-hover:scale-110 transition-transform"
+                    style="font-size: 24px;">skillet</span>
+                <p class="text-[10px] font-medium uppercase tracking-wide">Kitchen</p>
+            </a>
+            <a class="flex flex-1 flex-col items-center justify-end gap-1 text-text-muted hover:text-primary transition-colors group"
+                href="wellness.html">
+                <span class="material-symbols-outlined group-hover:scale-110 transition-transform"
+                    style="font-size: 24px;">self_improvement</span>
+                <p class="text-[10px] font-medium uppercase tracking-wide">Wellness</p>
+            </a>
+        </div>
+    </nav>
+    <script src="js/config.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>

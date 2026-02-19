@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Wellness Check - Sunny Bloom</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;400;600&amp;family=Satoshi:wght@400;500;700&amp;display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#F4978E">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Sunny Bloom">
+    <link rel="apple-touch-icon" href="https://placehold.co/180x180/F4978E/FFFDF5?text=SB">
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#F4978E",
+                        "primary-dark": "#D87C74",
+                        "accent": "#F8D57E",
+                        "background-light": "#FFFDF5",
+                        "background-dark": "#211211",
+                        "text-main": "#4A4238",
+                        "text-muted": "#9C8E80",
+                        "surface": "#FFFFFF",
+                        "sage": "#E6F0E9",
+                    },
+                    fontFamily: {
+                        "serif": ["Fraunces", "serif"],
+                        "sans": ["Satoshi", "sans-serif"],
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1.5rem",
+                        "xl": "2rem",
+                        "full": "9999px"
+                    },
+                    backgroundImage: {
+                        'paper-texture': "url('https://www.transparenttextures.com/patterns/cream-paper.png')",
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Satoshi', sans-serif;
+            min-height: max(884px, 100dvh);
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: 'Fraunces', serif;
+        }
+
+        .water-drop {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .water-drop.active {
+            fill: #A6C1EE;
+            stroke: #A6C1EE;
+            transform: scale(1.1);
+        }
+
+        .mood-btn {
+            transition: all 0.2s ease;
+        }
+
+        .mood-btn.active {
+            transform: scale(1.15);
+            filter: drop-shadow(0 0 8px #F8D57E);
+        }
+
+        .confetti-piece {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #F4978E;
+            top: 0;
+            opacity: 0;
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-10px) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* Safe Area */
+        body {
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        /* Wellness nav is manually styled in HTML with fixed bottom */
+        div.fixed.bottom-0 {
+            padding-bottom: calc(env(safe-area-inset-bottom) + 24px) !important;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-light text-text-main antialiased min-h-screen relative overflow-x-hidden selection:bg-primary/20">
+    <div class="fixed inset-0 pointer-events-none opacity-40 bg-paper-texture z-0 mix-blend-multiply"></div>
+    <div
+        class="relative z-10 max-w-md mx-auto min-h-screen flex flex-col bg-background-light/80 backdrop-blur-[2px] shadow-2xl">
+        <header
+            class="pt-8 pb-4 px-6 flex items-center justify-between sticky top-0 bg-background-light/95 backdrop-blur-md z-20 border-b border-primary/10">
+            <button class="p-2 -ml-2 text-text-main hover:bg-primary/10 rounded-full transition-colors"
+                onclick="window.history.back()">
+                <span class="material-symbols-outlined">arrow_back</span>
+            </button>
+            <div class="text-center">
+                <p class="text-xs font-sans font-medium tracking-wider text-text-muted uppercase">Ramadan Day 12 • 1445
+                    H</p>
+                <h1 class="text-xl font-serif font-semibold text-text-main mt-0.5">Wellness Check</h1>
+            </div>
+            <button class="p-2 -mr-2 text-text-main hover:bg-primary/10 rounded-full transition-colors"><span
+                    class="material-symbols-outlined">history</span></button>
+        </header>
+
+        <main class="flex-1 px-5 py-6 space-y-8 pb-28">
+            <!-- Greeting -->
+            <div class="bg-surface rounded-lg p-6 shadow-soft flex items-center gap-4 border border-white/50">
+                <div class="relative w-16 h-16 rounded-full overflow-hidden shrink-0 ring-4 ring-primary/10">
+                    <img alt="Abstract flower" class="w-full h-full object-cover"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuCsr8ci-KqgXtQr6LpqhxYnYA5a6THLfSIs0nYZKDl_SGRbRBAQuDeUN1mBJkrfqfn4SFE3JXDxtlEiu4HwX9cv19gJoBudIaom6MCuv0VRTB0eDiDUYgk7lJ7Xe43pfC41CZFaLdWc-3aNUv8EmI_j-Kb3eBHX2wKt3zPHqdMDbS0s_p1CPEP-7fhF0c9jmh9tgLCZ1KLCrxJLCA0axzol__3YDLIPjeMpyqgg_Trpx0hfeP-JAeFFMknKc3EKab_7s_k35pFrURmW" />
+                </div>
+                <div>
+                    <h2 class="text-lg font-serif text-text-main leading-tight">Assalamu’alaikum, Sarah</h2>
+                    <p class="text-sm text-text-muted mt-1 font-sans">Listen to your body today.</p>
+                </div>
+            </div>
+
+            <!-- Hydration -->
+            <section>
+                <div class="flex items-baseline justify-between mb-4 px-1">
+                    <h3 class="text-lg font-serif font-medium text-text-main">Hydration</h3><span
+                        class="text-sm font-sans font-medium text-primary bg-primary/10 px-2 py-0.5 rounded-full">Non-fasting
+                        hours</span>
+                </div>
+                <div class="bg-surface rounded-lg p-6 shadow-soft border border-white/50">
+                    <div class="flex justify-between items-center mb-6"><span class="text-sm text-text-muted">Target: 8
+                            cups</span><span class="text-2xl font-serif text-text-main" id="water-count">3<span
+                                class="text-base text-text-muted font-sans font-normal">/8</span></span></div>
+                    <div class="grid grid-cols-4 gap-y-6 gap-x-4 place-items-center">
+                        <!-- Repeated buttons for demo -->
+                        <button class="group focus:outline-none" onclick="toggleWater(this)"><svg
+                                class="water-drop active text-gray-200 stroke-current stroke-2" fill="none" height="42"
+                                viewbox="0 0 32 42" width="32">
+                                <path
+                                    d="M16 0C16 0 0 16.5 0 26.5C0 35.0604 7.16344 42 16 42C24.8366 42 32 35.0604 32 26.5C32 16.5 16 0 16 0Z">
+                                </path>
+                            </svg></button>
+                        <button class="group focus:outline-none" onclick="toggleWater(this)"><svg
+                                class="water-drop active text-gray-200 stroke-current stroke-2" fill="none" height="42"
+                                viewbox="0 0 32 42" width="32">
+                                <path
+                                    d="M16 0C16 0 0 16.5 0 26.5C0 35.0604 7.16344 42 16 42C24.8366 42 32 35.0604 32 26.5C32 16.5 16 0 16 0Z">
+                                </path>
+                            </svg></button>
+                        <button class="group focus:outline-none" onclick="toggleWater(this)"><svg
+                                class="water-drop text-gray-300 stroke-current stroke-2" fill="none" height="42"
+                                viewbox="0 0 32 42" width="32">
+                                <path
+                                    d="M16 0C16 0 0 16.5 0 26.5C0 35.0604 7.16344 42 16 42C24.8366 42 32 35.0604 32 26.5C32 16.5 16 0 16 0Z">
+                                </path>
+                            </svg></button>
+                        <button class="group focus:outline-none" onclick="toggleWater(this)"><svg
+                                class="water-drop text-gray-300 stroke-current stroke-2" fill="none" height="42"
+                                viewbox="0 0 32 42" width="32">
+                                <path
+                                    d="M16 0C16 0 0 16.5 0 26.5C0 35.0604 7.16344 42 16 42C24.8366 42 32 35.0604 32 26.5C32 16.5 16 0 16 0Z">
+                                </path>
+                            </svg></button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Mood -->
+            <section>
+                <h3 class="text-lg font-serif font-medium text-text-main mb-4 px-1">How is your energy?</h3>
+                <div
+                    class="bg-surface rounded-lg p-6 shadow-soft border border-white/50 flex justify-between items-center px-4">
+                    <button
+                        class="mood-btn text-3xl grayscale opacity-70 hover:opacity-100 hover:grayscale-0 focus:outline-none"
+                        onclick="selectMood(this)">😫</button>
+                    <button
+                        class="mood-btn text-3xl grayscale opacity-70 hover:opacity-100 hover:grayscale-0 focus:outline-none"
+                        onclick="selectMood(this)">😐</button>
+                    <button
+                        class="mood-btn text-3xl grayscale opacity-70 hover:opacity-100 hover:grayscale-0 focus:outline-none active"
+                        onclick="selectMood(this)">🙂</button>
+                    <button
+                        class="mood-btn text-3xl grayscale opacity-70 hover:opacity-100 hover:grayscale-0 focus:outline-none"
+                        onclick="selectMood(this)">😊</button>
+                </div>
+                <p class="text-center text-sm text-text-muted mt-3 font-medium" id="mood-label">Feeling okay</p>
+            </section>
+        </main>
+
+        <div class="fixed bottom-20 left-0 right-0 p-6 flex justify-center z-30 pointer-events-none">
+            <button
+                class="pointer-events-auto bg-primary text-white font-sans font-bold text-lg px-12 py-4 rounded-full shadow-lg shadow-primary/30 hover:shadow-primary/50 hover:bg-primary-dark active:scale-95 transition-all flex items-center gap-2"
+                onclick="saveEntry()">
+                <span>Save to Garden</span><span class="material-symbols-outlined text-xl">spa</span>
+            </button>
+        </div>
+
+        <div class="fixed inset-0 pointer-events-none z-50 overflow-hidden hidden" id="confetti-container"></div>
+
+        <div
+            class="fixed bottom-0 left-0 right-0 bg-background-light border-t border-primary/10 px-4 pb-6 pt-2 flex justify-around items-end z-40 max-w-md mx-auto">
+            <a class="flex flex-1 flex-col items-center justify-end gap-1 text-text-muted hover:text-primary transition-colors group"
+                href="index.html">
+                <span
+                    class="material-symbols-outlined text-[28px] group-hover:-translate-y-1 transition-transform">yard</span>
+                <p class="text-[10px] font-medium tracking-wide uppercase">Garden</p>
+            </a>
+            <a class="flex flex-1 flex-col items-center justify-end gap-1 text-text-muted hover:text-primary transition-colors group"
+                href="tracker.html">
+                <span
+                    class="material-symbols-outlined text-[28px] group-hover:-translate-y-1 transition-transform">calendar_month</span>
+                <p class="text-[10px] font-medium tracking-wide uppercase">Tracker</p>
+            </a>
+            <a class="flex flex-1 flex-col items-center justify-end gap-1 text-text-muted hover:text-primary transition-colors group"
+                href="kitchen.html">
+                <span
+                    class="material-symbols-outlined text-[28px] group-hover:-translate-y-1 transition-transform">skillet</span>
+                <p class="text-[10px] font-medium tracking-wide uppercase">Kitchen</p>
+            </a>
+            <a class="flex flex-1 flex-col items-center justify-end gap-1 text-primary relative group" href="#">
+                <span class="material-symbols-outlined text-[28px] fill-current">favorite</span>
+                <p class="text-[10px] font-medium tracking-wide uppercase">Wellness</p>
+            </a>
+        </div>
+    </div>
+    <script>
+        function toggleWater(element) {
+            const svg = element.querySelector('svg');
+            svg.classList.toggle('active');
+            svg.classList.toggle('text-gray-300');
+            svg.classList.toggle('text-gray-200');
+            updateWaterCount();
+        }
+        function updateWaterCount() {
+            const activeCount = document.querySelectorAll('.water-drop.active').length;
+            document.getElementById('water-count').innerHTML = `${activeCount}<span class="text-base text-text-muted font-sans font-normal">/8</span>`;
+        }
+        function selectMood(element) {
+            document.querySelectorAll('.mood-btn').forEach(btn => {
+                btn.classList.remove('active');
+                btn.classList.add('grayscale', 'opacity-70');
+            });
+            element.classList.add('active');
+            element.classList.remove('grayscale', 'opacity-70');
+            // Simplified label update
+            document.getElementById('mood-label').innerText = "Selected";
+        }
+        function saveEntry() {
+            const container = document.getElementById('confetti-container');
+            container.classList.remove('hidden');
+            container.innerHTML = '';
+            const colors = ['#F4978E', '#F8D57E', '#E6F0E9', '#D87C74'];
+            for (let i = 0; i < 30; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti-piece');
+                const left = Math.random() * 100 + 'vw';
+                const animDuration = Math.random() * 3 + 2 + 's';
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.left = left;
+                confetti.style.animation = `confetti-fall ${animDuration} linear ${Math.random() * 0.5 + 's'} forwards`;
+                confetti.style.backgroundColor = color;
+                confetti.style.borderRadius = "50% 0 50% 0";
+                container.appendChild(confetti);
+            }
+            setTimeout(() => { container.classList.add('hidden'); }, 4000);
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Kos Kitchen - Sunny Bloom Ramadan</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;400;600&amp;family=Satoshi:wght@400;500;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#F4978E">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Sunny Bloom">
+    <link rel="apple-touch-icon" href="https://placehold.co/180x180/F4978E/FFFDF5?text=SB">
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#F4978E",
+                        "background-light": "#FFFDF5",
+                        "surface": "#FFFFFF",
+                        "text-main": "#4A4238",
+                        "text-muted": "#9C8E80",
+                        "accent": "#F8D57E",
+                        "sage": "#E6F0E9",
+                    },
+                    fontFamily: {
+                        "serif": ["Fraunces", "serif"],
+                        "sans": ["Satoshi", "sans-serif"],
+                    },
+                    borderRadius: {
+                        "card": "24px",
+                        "btn": "100px",
+                    },
+                    boxShadow: {
+                        "soft": "0 10px 40px -10px rgba(244, 151, 142, 0.15)",
+                    },
+                    backgroundImage: {
+                        "paper-texture": "url('https://www.transparenttextures.com/patterns/cream-paper.png')",
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Satoshi', sans-serif;
+            min-height: max(884px, 100dvh);
+        }
+
+        h1,
+        h2,
+        h3,
+        .font-serif {
+            font-family: 'Fraunces', serif;
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .masonry-grid {
+            column-count: 2;
+            column-gap: 16px;
+        }
+
+        .masonry-item {
+            break-inside: avoid;
+            margin-bottom: 16px;
+        }
+
+        /* Safe Area */
+        body {
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        nav {
+            padding-bottom: calc(env(safe-area-inset-bottom) + 12px) !important;
+        }
+    </style>
+</head>
+
+<body class="bg-background-light text-text-main antialiased relative min-h-screen pb-24">
+    <div class="fixed inset-0 pointer-events-none opacity-40 mix-blend-multiply bg-paper-texture z-0"></div>
+    <div class="relative z-10 max-w-md mx-auto w-full flex flex-col min-h-screen">
+        <header
+            class="pt-8 px-6 pb-4 flex flex-col gap-4 sticky top-0 bg-background-light/95 backdrop-blur-sm z-20 transition-all duration-300">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-text-muted text-sm font-medium tracking-wide uppercase">Ramadan Recipes</p>
+                    <h1 class="text-[32px] font-serif font-semibold text-text-main leading-[1.2]">Kos Kitchen</h1>
+                </div>
+                <button
+                    class="w-12 h-12 rounded-full bg-surface border border-[#F3E8E7] flex items-center justify-center text-text-main shadow-sm hover:shadow-soft transition-shadow">
+                    <span class="material-symbols-outlined">search</span>
+                </button>
+            </div>
+            <!-- Filter Chips -->
+            <div class="flex gap-3 overflow-x-auto no-scrollbar pb-2 -mx-6 px-6 scroll-smooth">
+                <button
+                    class="flex shrink-0 items-center justify-center px-5 py-2.5 rounded-btn bg-primary text-white shadow-soft transition-all">
+                    <span class="text-sm font-bold whitespace-nowrap">All</span>
+                </button>
+                <button
+                    class="flex shrink-0 items-center justify-center px-5 py-2.5 rounded-btn bg-surface border border-[#F3E8E7] text-text-muted hover:text-text-main hover:border-primary/30 transition-all">
+                    <span class="text-sm font-medium whitespace-nowrap">Rice Cooker</span>
+                </button>
+                <button
+                    class="flex shrink-0 items-center justify-center px-5 py-2.5 rounded-btn bg-surface border border-[#F3E8E7] text-text-muted hover:text-text-main hover:border-primary/30 transition-all">
+                    <span class="text-sm font-medium whitespace-nowrap">Under 15k</span>
+                </button>
+                <button
+                    class="flex shrink-0 items-center justify-center px-5 py-2.5 rounded-btn bg-surface border border-[#F3E8E7] text-text-muted hover:text-text-main hover:border-primary/30 transition-all">
+                    <span class="text-sm font-medium whitespace-nowrap">&lt; 10 Mins</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Recipe Masonry Grid -->
+        <main class="px-4 pb-6 masonry-grid">
+            <!-- Card 1 -->
+            <div class="masonry-item relative group cursor-pointer">
+                <div
+                    class="bg-surface rounded-card p-3 shadow-soft hover:shadow-lg transition-all duration-300 border border-[#FDF6F5]">
+                    <div class="relative overflow-hidden rounded-[16px]">
+                        <img alt="Bowl of savory oatmeal porridge"
+                            class="w-full h-auto aspect-[3/4] object-cover hover:scale-105 transition-transform duration-500"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDDVsL0khDvA6W1vctdd2bZlOk_O1AGn9QjWiMc4IH0JwYhpK9XFzxLjV7LTgdWmmMt9kkI4XvNGeFwg-j3t3pSPhAbuWom0_E15tcNGjDEGnRczRM1i2txMmHg3lCUVcMlC67PYZGHICgwTyOH51Og1DEhEgrYEzmLMiUP1jJIXTfe_QtO3YVqHYnJcG_XdVJ5unltRKxwtfPb-iMu-jwp9xfw2HVUIwwWKz-XZAcZnpE5z1f2eUet8C8YI-lgVGPuFUn8ddcYcbMD" />
+                        <div class="absolute top-2 left-2 flex flex-wrap gap-1">
+                            <span
+                                class="bg-white/90 backdrop-blur-md px-2 py-1 rounded-full text-[10px] font-bold text-text-main shadow-sm">Rp
+                                10rb</span>
+                            <span
+                                class="bg-sage/90 backdrop-blur-md px-2 py-1 rounded-full text-[10px] font-bold text-text-main shadow-sm">Rice
+                                Cooker</span>
+                        </div>
+                    </div>
+                    <div class="mt-3 px-1">
+                        <h3 class="text-lg font-serif font-semibold text-text-main leading-tight mb-1">Savory Oatmeal
+                        </h3>
+                        <div class="flex items-center gap-1 text-text-muted text-xs">
+                            <span class="material-symbols-outlined text-[14px]">schedule</span>
+                            <span>15 mins</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Card 2 -->
+            <div class="masonry-item relative group cursor-pointer">
+                <div
+                    class="bg-surface rounded-card p-3 shadow-soft hover:shadow-lg transition-all duration-300 border border-[#FDF6F5]">
+                    <div class="relative overflow-hidden rounded-[16px]">
+                        <img alt="Es Timun Suri"
+                            class="w-full h-auto aspect-square object-cover hover:scale-105 transition-transform duration-500"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBuJVL-rgM0R5JSCn10-OWcFOvg_ZUoGuPOseo_tZwlGboLKccDoS_cVVSjJh0oTfyStsPZn-nsHmIdMYRjDieYJrJgeYvPpLE5B8Cu7_-TW8FT51SHOTeTc1Q7jiAOstuyPm-4eD_qwJxglFrT5ZxPO3T6gV8tU89pV7gi4OXpKZgIk_YaGV9W8Lph-a10hgTaDct8rtNixCQboHTyQZ9R3T496zkhELlInChQA8BPZdyc3l6PLTaj9fS_YNxTJGPcayL5bkJlTfCo" />
+                        <div class="absolute top-2 left-2 flex flex-wrap gap-1"><span
+                                class="bg-sage/90 backdrop-blur-md px-2 py-1 rounded-full text-[10px] font-bold text-text-main shadow-sm">No
+                                Cook</span></div>
+                    </div>
+                    <div class="mt-3 px-1">
+                        <h3 class="text-lg font-serif font-semibold text-text-main leading-tight mb-1">Es Timun Suri
+                            Lime</h3>
+                    </div>
+                </div>
+            </div>
+            <!-- Card 3 -->
+            <div class="masonry-item relative group cursor-pointer">
+                <div
+                    class="bg-surface rounded-card p-3 shadow-soft hover:shadow-lg transition-all duration-300 border border-[#FDF6F5]">
+                    <div class="relative overflow-hidden rounded-[16px]">
+                        <img alt="Crispy Tempeh"
+                            class="w-full h-auto aspect-[4/5] object-cover hover:scale-105 transition-transform duration-500"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAEjCFrILVtgwGECeKoEr5bmNW9VwK2WCKJFWmZOP3uVYo4D_WzlVJFewd6VhwpMmwqxbnaOAmnKowe0cZP4lKfn_8Xs9p2IfbgUfk9vIqKu2NNemkMzvEgUx0xZt1u0n5oKLFBmyHVVbfmEr--oxJEEm6vPP3AnncxaBbxOrFgHNcEIao-xPl0ZI1V0kTNP6QFkpdbDoUbS-ZobSxU-OrJSqRTMk0yQ0wJNmz6mwO3pLypy5j99N18pa9nW4nLPcSdpexFzo_mXQA-" />
+                        <div class="absolute top-2 left-2 flex flex-wrap gap-1"><span
+                                class="bg-white/90 backdrop-blur-md px-2 py-1 rounded-full text-[10px] font-bold text-text-main shadow-sm">Rp
+                                12rb</span></div>
+                    </div>
+                    <div class="mt-3 px-1">
+                        <h3 class="text-lg font-serif font-semibold text-text-main leading-tight mb-1">Crispy Tempeh
+                        </h3>
+                    </div>
+                </div>
+            </div>
+            <!-- Card 4 -->
+            <div class="masonry-item relative group cursor-pointer">
+                <div
+                    class="bg-surface rounded-card p-3 shadow-soft hover:shadow-lg transition-all duration-300 border border-[#FDF6F5]">
+                    <div class="relative overflow-hidden rounded-[16px]">
+                        <img alt="Soy Sauce Eggs"
+                            class="w-full h-auto aspect-square object-cover hover:scale-105 transition-transform duration-500"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDFiVM-Iheb2Kwasf19UEAIRPsdoVm_3v2Eu7sN0PhWDp4OXzFEzKhjdYr2Twbr6Ho5lSF9cfduogFhcqLxyie8GBCkKhKeWvFrg69fMpzjQWWP4qS_2NtjJk7PGnXHjyQKXSpPZZ1LhjdEHmmQ_MJSOKS7LqO-YqFtll6E47qVtVAShPCUUQOpVwLqteEjHLJTuslaFrBvhnyZ7JdskVO4pyOuMu4Ke5O0To0OJe0FiitKt8E1h9Vb2Ny27yUkR2ICc5b-i_L1VmG7" />
+                        <div class="absolute top-2 left-2 flex flex-wrap gap-1"><span
+                                class="bg-white/90 backdrop-blur-md px-2 py-1 rounded-full text-[10px] font-bold text-text-main shadow-sm">Rp
+                                8rb</span></div>
+                    </div>
+                    <div class="mt-3 px-1">
+                        <h3 class="text-lg font-serif font-semibold text-text-main leading-tight mb-1">Soy Sauce Eggs
+                        </h3>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <nav class="fixed bottom-0 w-full max-w-md z-40">
+            <div
+                class="absolute bottom-full w-full h-12 bg-gradient-to-t from-background-light to-transparent pointer-events-none">
+            </div>
+            <div
+                class="relative flex border-t border-[#f3e8e7] bg-background-light px-4 pb-6 pt-2 shadow-[0_-5px_20px_rgba(0,0,0,0.02)]">
+                <a class="flex flex-1 flex-col items-center justify-end gap-1 text-text-muted hover:text-primary transition-colors group"
+                    href="index.html">
+                    <span
+                        class="material-symbols-outlined text-[24px] group-hover:scale-110 transition-transform">yard</span>
+                    <p class="text-xs font-medium leading-normal tracking-[0.015em]">Garden</p>
+                </a>
+                <a class="flex flex-1 flex-col items-center justify-end gap-1 text-text-muted hover:text-primary transition-colors group"
+                    href="tracker.html">
+                    <span
+                        class="material-symbols-outlined text-[24px] group-hover:scale-110 transition-transform">calendar_month</span>
+                    <p class="text-xs font-medium leading-normal tracking-[0.015em]">Tracker</p>
+                </a>
+                <a class="flex flex-1 flex-col items-center justify-end gap-1 text-text-main group" href="#">
+                    <div class="bg-sage rounded-full px-4 py-0.5 mb-0.5">
+                        <span
+                            class="material-symbols-outlined text-[24px] fill-current text-primary group-hover:scale-110 transition-transform pt-1"
+                            style="font-variation-settings: 'FILL' 1;">soup_kitchen</span>
+                    </div>
+                    <p class="text-xs font-bold leading-normal tracking-[0.015em]">Kitchen</p>
+                </a>
+                <a class="flex flex-1 flex-col items-center justify-end gap-1 text-text-muted hover:text-primary transition-colors group"
+                    href="wellness.html">
+                    <span
+                        class="material-symbols-outlined text-[24px] group-hover:scale-110 transition-transform">self_improvement</span>
+                    <p class="text-xs font-medium leading-normal tracking-[0.015em]">Wellness</p>
+                </a>
+            </div>
+        </nav>
+        <script src="js/config.js"></script>
+        <script src="js/app.js"></script>
+</body>
+
+</html>
